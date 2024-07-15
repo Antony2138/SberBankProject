@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
     <description>hibernate</description>
     <modules>
-        <module>ProjectTest</module>
+
     </modules>
     <groupId>org.example</groupId>
     <artifactId>SpringBoot</artifactId>

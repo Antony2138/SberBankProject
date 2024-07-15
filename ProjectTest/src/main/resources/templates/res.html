@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo</title>
+</head>
+<body>
+
+<form th:action="@{/ToDo}" th:method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+    Описание: <input type="text" step="any" name="description"/>-->
+    <button type="submit">Submit</button>
+</form>
+
+<ul>
+    <a style="display: block" th:each="plan : ${plans}" th:text="${plan.getName()}" th:href="@{/ToDo/{id}(id=${plan.getId()})}"> </a>
+</ul>
+
+
+
+<div>
+    <p th:text="${showOnePlan.getName()}"></p>
+    <p th:text="${showOnePlan.getDescription()}"></p>
+</div>
+
+<form action="/ToDO/deleteAll" method="get">
+    <button type="submit">УДАЛИТЬ ВСЕ</button>
+</form>
+
+
+
+
+
+
+
+<!--    <div class="form-error" th:if="${#fields.hasErrors('description')}" th:text="${#fields.errors('description').get(#fields.errors('description').size() - 1)}" ></div><br />-->
+<!--    <div><input type = "radio" value="1" name="rating" /> <input type = "radio"-->
+<!--             value="2" name="rating" /> <input type = "radio" value="3" name="rating"/>-->
+<!--        <input type = "radio" value="4" name="rating" />-->
+<!--        <input type = "radio" value="5" name="rating" />-->
+<!--        <div  th:if="${#fields.hasErrors('rating')}" th:text="${#fields.errors('rating').get(#fields.errors('rating').size() - 1)}" ></div></div>-->
+<!--    <label for="localdate">Дата и время: </label>-->
+<!--    <input type="datetime-local" id="localdate" name="deadline"/>-->
+<!--    <div  th:if="${#fields.hasErrors('deadline')}" th:text="${#fields.errors('deadline').get(#fields.errors('deadline').size() - 1)}" ></div><br />-->
+<!--    <label for="category-select">Категория задачи:</label>-->
+<!--    <select name="planCategory" id="category-select">-->
+<!--        <option value="">-Выберите категорию задачи&#45;&#45;</option>-->
+<!--        <option value='HOUSEHOLD'>Бытовая</option>-->
+<!--        <option value='ANY'>Все остальные</option>-->
+<!--    </select>-->
+<!--    <button type="submit">Добавить план</button>-->
+
+
+
+
+<!--<h1>Submitted Name: <span th:text="${plans}"></span></h1>-->
+
+
+
+
+<!--<div>-->
+<!--    <form th:action="@{/ToDO}" th:method="post" th:object="${plan}">-->
+<!--        <label>Enter name: </label>-->
+<!--        <input type="text" th:field="*{name}" id="name"/>-->
+<!--    </form>-->
+
+<!--    <form th:action="@{/ToDO}" th:method="post" th:object="${plan}">-->
+<!--        <label>Enter description: </label>-->
+<!--        <input type="text" th:field="*{description}" id=""/>-->
+<!--    </form>-->
+
+<!--    <button type="submit">Добавить план</button>-->
+<!--</div>-->
+
+<!--<div th:each="plan : ${plans}">-->
+<!--    <a th:text="${plan.getName()}"-->
+<!--       th:href="@{/ToDO/{id}(id=${plan.getId()})}"></a>-->
+<!--        <button type="submit" th:href="@{/ToDO/{id}(id=${plan.getId()})}" >Update</button>-->
+<!--</div>-->
+
+
+</body>
+</html>
