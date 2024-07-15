@@ -8,6 +8,7 @@ import org.example.services.PlanServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/ToDo")
@@ -19,18 +20,10 @@ public class PlanController {
         this.planServices = planServices;
     }
 
-    @PostMapping()
-    public String addPlan(@ModelAttribute("plan") Plan plan, Model model){
-        planServices.save(plan);
-        model.addAttribute("plans", planServices.lookAll());
-        System.out.println(planServices.lookAll());
-        return "ToDo";
-    }
-
     @GetMapping()
-    public String start(Model model) {
-        model.addAttribute("plans", planServices.lookAll());
-        return "ToDo";
+    public String homeSweetHome(Model model) {
+        model.addAttribute("message", "Hello");
+        return "look";
     }
 
 
