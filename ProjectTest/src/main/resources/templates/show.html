@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<span>Название цели:</span> <p th:text="${onePlan.getName()}"></p>
+<span>Описание цели:</span> <p th:text="${onePlan.getDescription()}"></p>
+<span>Важность цели:</span> <p th:text="${onePlan.getRate()}"></p>
+
+</body>
+</html>

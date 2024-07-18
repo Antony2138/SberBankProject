@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Вход</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      font-family: 'Roboto', sans-serif;
+      background-color: #e8f0fe;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .header {
+      width: 100%;
+      background-color: #4285f4;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+      font-size: 1.8em;
+      font-weight: bold;
+      border-bottom: 3px solid #3367d6;
+    }
+    .form-container {
+      width: 90%;
+      max-width: 500px;
+      padding: 30px;
+      background: white;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      border-radius: 12px;
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .form-group {
+      margin-bottom: 20px;
+      width: 100%;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+    .submit-button {
+      width: 100%;
+      padding: 12px 0;
+      background: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+      font-size: 1.1em;
+      font-weight: bold;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .submit-button:hover {
+      background-color: #3367d6;
+      transform: scale(1.05);
+    }
+    .submit-button:active {
+      background-color: #2854b1;
+      transform: scale(0.95);
+    }
+    .form-error {
+      color: red;
+      font-size: 0.875em;
+    }
+    .link {
+      margin-top: 20px;
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      background-color: #4285f4;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .link:hover {
+      background-color: #3367d6;
+      transform: scale(1.05);
+    }
+    .link:active {
+      background-color: #2854b1;
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body>
+<div class="header">Вход</div>
+<div class="form-container">
+  <form th:action="@{/login}" method="post">
+    <div class="form-group">
+      <label for="username">Электронная почта:</label>
+      <input type="text" id="username" name="username"/>
+    </div>
+    <div class="form-group">
+      <label for="password">Пароль:</label>
+      <input type="password" id="password" name="password"/>
+    </div>
+    <button type="submit" class="submit-button">Войти</button>
+  </form>
+  <a th:href="@{/registration}" class="register-button">Регистрация</a>
+  <p th:if="${param.error}" class="form-error">Неправильный логин или пароль</p>
+</div>
+</body>
+</html>

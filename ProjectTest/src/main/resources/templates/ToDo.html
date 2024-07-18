@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            width: 90%;
+            height: 100%;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding-top: 50px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-container, .list-container {
+            padding: 30px;
+        }
+        .form-container {
+            border-right: 1px solid #ccc;
+        }
+        form {
+            background: #fff;
+            border-radius: 8px;
+        }
+        ul {
+            margin-block-start: 0em;
+            margin-block-end: 0em;
+            padding-inline-start: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="datetime-local"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .rating {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-direction: row-reverse;
+        }
+        .rating input {
+            display: none;
+        }
+        .rating label {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+        }
+        .rating input:checked ~ label {
+            color: #f5b301;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .list-container.active-tasks {
+            width: 60%;
+        }
+        .list-container.archive-tasks {
+            width: 40%;
+        }
+        .task {
+            background: #fff;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task div span {
+            flex-grow: 1;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .task button {
+            background-color: #dc3545;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .task button:hover {
+            background-color: #c82333;
+            opacity: 1;
+        }
+        .task a {
+            text-decoration: none;
+        }
+        .task a button {
+            background-color: #007bff;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .task a button:hover {
+            background-color: #0056b3;
+            opacity: 1;
+        }
+        .status{
+            color: green;
+            font-weight: bold;
+            font-size: 20px;
+
+        }
+        .task .buttons {
+            display: flex;
+            gap: 5px;
+            margin-left: auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .form-error {
+            color: red;
+            font-size: 0.875em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-container">
+
+        <span th:text="${username}"></span>
+        <a class="logout-button" th:href="@{/logout}">Выйти</a>
+        <div class="section-title">Создание задачи</div>
+        <form th:action="@{/ToDo}" th:method="post" th:object="${plan}">
+            <label for="name">Название цели:</label>
+            <input type="text" th:field="*{name}" id="name"/>
+            <div class="form-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+            <label for="description">Описание:</label>
+            <input type="text" step="any" th:field="*{description}" id="description"/>
+
+            <label for="rate">Важность:</label>
+            <div class="rating" id="rate">
+                <input type="radio" id="star5" name="rate" value="5" th:field="*{rate}"/><label for="star5" title="5 stars">★</label>
+                <input type="radio" id="star4" name="rate" value="4" th:field="*{rate}"/><label for="star4" title="4 stars">★</label>
+                <input type="radio" id="star3" name="rate" value="3" th:field="*{rate}"/><label for="star3" title="3 stars">★</label>
+                <input type="radio" id="star2" name="rate" value="2" th:field="*{rate}"/><label for="star2" title="2 stars">★</label>
+                <input type="radio" id="star1" name="rate" value="1" th:field="*{rate}"/><label for="star1" title="1 star">★</label>
+            </div>
+
+            <label for="localdate">Дата и время:</label>
+            <input type="datetime-local" id="localdate" th:field="*{time}"/>
+            <div class="form-group">
+                <label for="category-select">Категория задачи:</label>
+                <select th:field="*{planCategory}" id="category-select">
+                    <option value=''>-Выберите категорию задачи--</option>
+                    <option value='Быт'>Быт</option>
+                    <option value='Подождёт'>Подождёт</option>
+                    <option value='Другое'>Другое</option>
+                </select>
+<!--                <div class="form-error" th:if="${#fields.hasErrors('planCategory')}" th:text="${#fields.errors('planCategory').get(#fields.errors('planCategory').size() - 1)}"></div>-->
+            </div>
+            <button type="submit">Добавить план</button>
+        </form>
+
+        <form th:action="@{/ToDo/findByKeyWord}" th:method="get">
+            <label for="keyword">Поиск:</label>
+            <input type="text" name ="name" id="keyword"/>
+            <button type="submit">Поиск</button>
+        </form>
+        <a href="/ToDo/sort?criteri=rate" ><button>Сортировать по важности</button></a>
+        <a href="/ToDo/sort?criteri=completed" ><button>Вначале выполненные</button></a>
+
+
+
+
+    </div>
+
+
+
+
+
+    <div class="list-container active-tasks">
+        <div class="section-title">Активные задачи</div>
+        <ul th:each="plan : ${plans}">
+            <li class="task">
+                <a th:href="@{/ToDo/{id}(id=${plan.getId()})}">
+                    <span th:text="${plan.getName()}"></span>
+                </a>
+                <div class="buttons">
+                    <form th:method="POST" th:action="@{/ToDo/{id}/delete(id=${plan.getId()})}">
+                        <button type="submit">Удалить</button>
+                    </form>
+                    <form th:method="POST" th:action="@{/ToDo/{id}/arhiv(id=${plan.getId()})}">
+                        <button type="submit">В архив</button>
+                    </form>
+                    <a th:href="@{/ToDo/{id}/edit(id=${plan.getId()})}">
+                        <button>Редактировать</button>
+                    </a>
+                    <span th:text="${plan.getRate()}"></span>
+                    <span style="color: gold">✰</span>
+                    <div class="status" th:if="${plan.isCompleted()}">+</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="list-container archive-tasks">
+        <div class="section-title">Архив</div>
+        <ul th:each="planik : ${arhivPlans}">
+            <li class="task">
+                <a th:href="@{/ToDo/arhiv/{id}(id=${planik.getId()})}">
+                    <span th:text="${planik.getName()}"></span>
+                </a>
+                <form th:method="POST" th:action="@{/ToDo/{id}/backActive(id=${planik.getId()})}">
+                    <button type="submit">Убрать из архива</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

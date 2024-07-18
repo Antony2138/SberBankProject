@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            width: 60%;
+            height: auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            flex-direction: column;
+        }
+        .form-container {
+            width: 100%;
+        }
+        form {
+            background: #fff;
+            border-radius: 8px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        p {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .back-button {
+            background-color: #007bff;
+            color: white;
+        }
+        .delete-button {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="form-container">
+        <form>
+            <label>Название плана:</label>
+            <p th:text="${onePlan.getName()}"></p>
+
+            <label>Описание плана:</label>
+            <p th:text="${onePlan.getDescription()}"></p>
+
+            <label>Важность плана:</label>
+            <p th:text="${onePlan.getRate()}"></p>
+
+            <label>Дата окончания:</label>
+            <p th:text="${onePlan.getTime()}"></p>
+
+            <label>Категория</label>
+            <p th:text="${onePlan.getPlanCategory()}"></p>
+        </form>
+        <div class="button-container">
+            <a th:href="@{/ToDo}">
+                <button class="back-button">НАЗАД</button>
+            </a>
+            <a th:href="@{/ToDo/{id}/edit(id=${onePlan.getId()})}">
+                <button>Редактировать</button>
+            </a>
+            <form th:method="POST" th:action="@{/ToDo/{id}/delete(id=${onePlan.getId()})}">
+                <button type="submit" class="delete-button">Удалить</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
