@@ -1,20 +1,22 @@
 package org.example.services;
 
 import org.example.model.Plan;
+import org.example.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public interface PlanServices {
-    void save(Plan plan);
+public interface PlanServices<P> {
+    void save(P plan);
 
-    Optional<Plan> findById(long id);
+    P findById(long id);
 
-    List<Plan> lookAll();
+    List<P> lookAll(User user);
+    P findByIdAndUser(long id, User user);
 
-    void update(Plan plan, long id);
+
+    void update(P plan, long id);
 
     void delete(long id);
 }

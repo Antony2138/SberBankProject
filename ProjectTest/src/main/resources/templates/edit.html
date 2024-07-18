@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            width: 60%;
+            height: auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container {
+            padding: 30px;
+            width: 100%;
+        }
+        form {
+            background: #fff;
+            border-radius: 8px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="datetime-local"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .rating {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-direction: row-reverse;
+        }
+        .rating input {
+            display: none;
+        }
+        .rating label {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+        }
+        .rating input:checked ~ label {
+            color: #f5b301;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .button-container label{
+        font-size: 20px
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-container">
+        <form th:action="@{/ToDo/{id}/edit(id=${editplan.getId()})}" th:method="post" th:object="${editplan}">
+            <label for="name">Название цели:</label>
+            <input type="text" th:field="*{name}" id="name" th:value="${editplan.getName()}"/>
+
+            <label for="description">Описание:</label>
+            <input type="text" step="any" th:field="*{description}" id="description" th:value="${editplan.getDescription()}"/>
+
+            <label for="rate">Важность:</label>
+            <div class="rating">
+                <input type="radio" id="star5" name="rate" value="5" th:checked="${editplan.getRate() == 5}" th:field="*{rate}"/><label for="star5" title="5 stars">★</label>
+                <input type="radio" id="star4" name="rate" value="4" th:checked="${editplan.getRate()  == 4}" th:field="*{rate}"/><label for="star4" title="4 stars">★</label>
+                <input type="radio" id="star3" name="rate" value="3" th:checked="${editplan.getRate()  == 3}" th:field="*{rate}"/><label for="star3" title="3 stars">★</label>
+                <input type="radio" id="star2" name="rate" value="2" th:checked="${editplan.getRate()  == 2}" th:field="*{rate}"/><label for="star2" title="2 stars">★</label>
+                <input type="radio" id="star1" name="rate" value="1"  th:checked="${editplan.getRate()  == 1}" th:field="*{rate}"/><label for="star1" title="1 star">★</label>
+            </div>
+
+            <label for="localdate">Дата и время:</label>
+            <input type="datetime-local" id="localdate" th:field="*{time}" th:value="${editplan.getTime()}"/>
+
+            <div class="button-container">
+                <a th:href="@{/ToDo}"><button type="button">Назад</button></a>
+                <button type="submit">Обновить</button>
+                <label for="completed">
+                    Завершить цель
+                    <input type="checkbox" id="completed" th:field="*{completed}" th:checked="${editplan.isCompleted()}"/>
+                </label>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

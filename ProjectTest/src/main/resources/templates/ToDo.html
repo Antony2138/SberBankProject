@@ -3,85 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <title>ToDo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            width: 90%;
+            height: 100%;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding-top: 50px;
+        }
+
+        .form-container, .list-container {
+            padding: 30px;
+        }
+        .form-container {
+            border-right: 1px solid #ccc;
+        }
+        form {
+            background: #fff;
+            border-radius: 8px;
+        }
+        ul {
+            margin-block-start: 0em;
+            margin-block-end: 0em;
+            padding-inline-start: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="datetime-local"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .rating {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            flex-direction: row-reverse;
+        }
+        .rating input {
+            display: none;
+        }
+        .rating label {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+        }
+        .rating input:checked ~ label {
+            color: #f5b301;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .list-container.active-tasks {
+            width: 60%;
+        }
+        .list-container.archive-tasks {
+            width: 40%;
+        }
+        .task {
+            background: #fff;
+            padding: 8px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task div span {
+            flex-grow: 1;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .task button {
+            background-color: #dc3545;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .task button:hover {
+            background-color: #c82333;
+            opacity: 1;
+        }
+        .task a {
+            text-decoration: none;
+        }
+        .task a button {
+            background-color: #007bff;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .task a button:hover {
+            background-color: #0056b3;
+            opacity: 1;
+        }
+        .status{
+            color: green;
+            font-weight: bold;
+            font-size: 20px;
+
+        }
+        .task .buttons {
+            display: flex;
+            gap: 5px;
+            margin-left: auto;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
 
-asdfgh
+<div class="container">
+    <div class="form-container">
 
-<p th:text="${message}"></p>
-<form th:action="@{/ToDo}" th:method="post">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name">
-    Описание: <input type="text" step="any" name="description"/>-->
-    <button type="submit">Submit</button>
-</form>
+        <span th:text="${username}"></span>
+        <a class="logout-button" th:href="@{/logout}">Выйти</a>
+        <div class="section-title">Создание задачи</div>
+        <form th:action="@{/ToDo}" th:method="post" th:object="${plan}">
+            <label for="name">Название цели:</label>
+            <input type="text" th:field="*{name}" id="name"/>
 
-<ul>
-        <a style="display: block" th:each="plan : ${plans}" th:text="${plan.getName()}" th:href="@{/ToDo/{id}(id=${plan.getId()})}"> </a>
-</ul>
+            <label for="description">Описание:</label>
+            <input type="text" step="any" th:field="*{description}" id="description"/>
+
+            <label for="rate">Важность:</label>
+            <div class="rating" id="rate">
+                <input type="radio" id="star5" name="rate" value="5" th:field="*{rate}"/><label for="star5" title="5 stars">★</label>
+                <input type="radio" id="star4" name="rate" value="4" th:field="*{rate}"/><label for="star4" title="4 stars">★</label>
+                <input type="radio" id="star3" name="rate" value="3" th:field="*{rate}"/><label for="star3" title="3 stars">★</label>
+                <input type="radio" id="star2" name="rate" value="2" th:field="*{rate}"/><label for="star2" title="2 stars">★</label>
+                <input type="radio" id="star1" name="rate" value="1" th:field="*{rate}"/><label for="star1" title="1 star">★</label>
+            </div>
+
+            <label for="localdate">Дата и время:</label>
+            <input type="datetime-local" id="localdate" th:field="*{time}"/>
+
+            <button type="submit">Добавить план</button>
+        </form>
+        <form th:action="@{/ToDo/findByKeyWord}" th:method="get">
+            <label for="keyword">Поиск:</label>
+            <input type="text" name ="name" id="keyword"/>
+            <button type="submit">Поиск</button>
+        </form>
+        <a href="/ToDo/sort?criteri=rate" ><button>Сортировать по важности</button></a>
+
+
+    </div>
 
 
 
-<div>
-    <p th:text="${showOnePlan.getName()}"></p>
-    <p th:text="${showOnePlan.getDescription()}"></p>
+
+
+    <div class="list-container active-tasks">
+        <div class="section-title">Активные задачи</div>
+        <ul th:each="plan : ${plans}">
+            <li class="task">
+                <a th:href="@{/ToDo/{id}(id=${plan.getId()})}">
+                    <span th:text="${plan.getName()}"></span>
+                </a>
+                <div class="buttons">
+                    <form th:method="POST" th:action="@{/ToDo/{id}/delete(id=${plan.getId()})}">
+                        <button type="submit">Удалить</button>
+                    </form>
+                    <form th:method="POST" th:action="@{/ToDo/{id}/arhiv(id=${plan.getId()})}">
+                        <button type="submit">В архив</button>
+                    </form>
+                    <a th:href="@{/ToDo/{id}/edit(id=${plan.getId()})}">
+                        <button>Редактировать</button>
+                    </a>
+                    <span th:text="${plan.getRate()}"></span>
+                    <span style="color: gold">✰</span>
+                    <div class="status" th:if="${plan.isCompleted()}">+</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="list-container archive-tasks">
+        <div class="section-title">Архив</div>
+        <ul th:each="planik : ${arhivPlans}">
+            <li class="task">
+                <a th:href="@{/ToDo/arhiv/{id}(id=${planik.getId()})}">
+                    <span th:text="${planik.getName()}"></span>
+                </a>
+                <form th:method="POST" th:action="@{/ToDo/{id}/backActive(id=${planik.getId()})}">
+                    <button type="submit">Убрать из архива</button>
+                </form>
+            </li>
+        </ul>
+    </div>
 </div>
-
-<!--<form action="/ToDO/deleteAll" method="get">-->
-<!--    <button type="submit">УДАЛИТЬ ВСЕ</button>-->
-<!--</form>-->
-
-
-
-
-
-
-
-<!--    <div class="form-error" th:if="${#fields.hasErrors('description')}" th:text="${#fields.errors('description').get(#fields.errors('description').size() - 1)}" ></div><br />-->
-<!--    <div><input type = "radio" value="1" name="rating" /> <input type = "radio"-->
-<!--             value="2" name="rating" /> <input type = "radio" value="3" name="rating"/>-->
-<!--        <input type = "radio" value="4" name="rating" />-->
-<!--        <input type = "radio" value="5" name="rating" />-->
-<!--        <div  th:if="${#fields.hasErrors('rating')}" th:text="${#fields.errors('rating').get(#fields.errors('rating').size() - 1)}" ></div></div>-->
-<!--    <label for="localdate">Дата и время: </label>-->
-<!--    <input type="datetime-local" id="localdate" name="deadline"/>-->
-<!--    <div  th:if="${#fields.hasErrors('deadline')}" th:text="${#fields.errors('deadline').get(#fields.errors('deadline').size() - 1)}" ></div><br />-->
-<!--    <label for="category-select">Категория задачи:</label>-->
-<!--    <select name="planCategory" id="category-select">-->
-<!--        <option value="">-Выберите категорию задачи&#45;&#45;</option>-->
-<!--        <option value='HOUSEHOLD'>Бытовая</option>-->
-<!--        <option value='ANY'>Все остальные</option>-->
-<!--    </select>-->
-<!--    <button type="submit">Добавить план</button>-->
-
-
-
-
-<!--<h1>Submitted Name: <span th:text="${plans}"></span></h1>-->
-
-
-
-
-<!--<div>-->
-<!--    <form th:action="@{/ToDO}" th:method="post" th:object="${plan}">-->
-<!--        <label>Enter name: </label>-->
-<!--        <input type="text" th:field="*{name}" id="name"/>-->
-<!--    </form>-->
-
-<!--    <form th:action="@{/ToDO}" th:method="post" th:object="${plan}">-->
-<!--        <label>Enter description: </label>-->
-<!--        <input type="text" th:field="*{description}" id=""/>-->
-<!--    </form>-->
-
-<!--    <button type="submit">Добавить план</button>-->
-<!--</div>-->
-
-<!--<div th:each="plan : ${plans}">-->
-<!--    <a th:text="${plan.getName()}"-->
-<!--       th:href="@{/ToDO/{id}(id=${plan.getId()})}"></a>-->
-<!--        <button type="submit" th:href="@{/ToDO/{id}(id=${plan.getId()})}" >Update</button>-->
-<!--</div>-->
-
 
 </body>
 </html>

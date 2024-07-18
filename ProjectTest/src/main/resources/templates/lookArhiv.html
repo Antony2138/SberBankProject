@@ -17,16 +17,15 @@
         .container {
             display: flex;
             width: 60%;
-            height: auto;
+            height: 90%;
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            flex-direction: column;
         }
         .form-container {
+            padding: 30px;
             width: 100%;
         }
         form {
@@ -45,7 +44,7 @@
             border-radius: 4px;
             background-color: #f9f9f9;
         }
-        .button-container {
+                .button-container {
             display: flex;
             justify-content: space-between;
             width: 100%;
@@ -59,10 +58,6 @@
         }
         .back-button {
             background-color: #007bff;
-            color: white;
-        }
-        .delete-button {
-            background-color: #dc3545;
             color: white;
         }
     </style>
@@ -87,13 +82,6 @@
             <a th:href="@{/ToDo}">
                 <button class="back-button">НАЗАД</button>
             </a>
-            <a th:href="@{/ToDo/{id}/edit(id=${onePlan.getId()})}">
-                <button>Редактировать</button>
-            </a>
-            <form th:method="POST" th:action="@{/ToDo/{id}/delete(id=${onePlan.getId()})}">
-                <button type="submit" class="delete-button">Удалить</button>
-            </form>
-
         </div>
     </div>
 </div>
