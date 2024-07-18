@@ -105,6 +105,17 @@
             <label for="localdate">Дата и время:</label>
             <input type="datetime-local" id="localdate" th:field="*{time}" th:value="${editplan.getTime()}"/>
 
+            <div class="form-group">
+                <label for="category-select">Категория задачи:</label>
+                <select th:field="*{planCategory}" id="category-select">
+                    <option value=''>-Выберите категорию задачи--</option>
+                    <option value='Быт'>Быт</option>
+                    <option value='Подождёт'>Подождёт</option>
+                    <option value='Другое'>Другое</option>
+                </select>
+                <!--                <div class="form-error" th:if="${#fields.hasErrors('planCategory')}" th:text="${#fields.errors('planCategory').get(#fields.errors('planCategory').size() - 1)}"></div>-->
+            </div>
+
             <div class="button-container">
                 <a th:href="@{/ToDo}"><button type="button">Назад</button></a>
                 <button type="submit">Обновить</button>

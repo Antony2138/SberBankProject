@@ -23,7 +23,17 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding-top: 50px;
         }
-
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
         .form-container, .list-container {
             padding: 30px;
         }
@@ -148,6 +158,10 @@
             font-weight: bold;
             margin-bottom: 10px;
         }
+        .form-error {
+            color: red;
+            font-size: 0.875em;
+        }
     </style>
 </head>
 <body>
@@ -161,7 +175,7 @@
         <form th:action="@{/ToDo}" th:method="post" th:object="${plan}">
             <label for="name">Название цели:</label>
             <input type="text" th:field="*{name}" id="name"/>
-
+            <div class="form-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
             <label for="description">Описание:</label>
             <input type="text" step="any" th:field="*{description}" id="description"/>
 
@@ -176,15 +190,28 @@
 
             <label for="localdate">Дата и время:</label>
             <input type="datetime-local" id="localdate" th:field="*{time}"/>
-
+            <div class="form-group">
+                <label for="category-select">Категория задачи:</label>
+                <select th:field="*{planCategory}" id="category-select">
+                    <option value=''>-Выберите категорию задачи--</option>
+                    <option value='Быт'>Быт</option>
+                    <option value='Подождёт'>Подождёт</option>
+                    <option value='Другое'>Другое</option>
+                </select>
+<!--                <div class="form-error" th:if="${#fields.hasErrors('planCategory')}" th:text="${#fields.errors('planCategory').get(#fields.errors('planCategory').size() - 1)}"></div>-->
+            </div>
             <button type="submit">Добавить план</button>
         </form>
+
         <form th:action="@{/ToDo/findByKeyWord}" th:method="get">
             <label for="keyword">Поиск:</label>
             <input type="text" name ="name" id="keyword"/>
             <button type="submit">Поиск</button>
         </form>
         <a href="/ToDo/sort?criteri=rate" ><button>Сортировать по важности</button></a>
+        <a href="/ToDo/sort?criteri=completed" ><button>Вначале выполненные</button></a>
+
+
 
 
     </div>

@@ -1,6 +1,7 @@
 package org.example.controllers;
 
 
+import jakarta.validation.Valid;
 import org.example.model.ArhivPlan;
 import org.example.model.User;
 import org.example.services.ArhivPlanImpl;
@@ -12,6 +13,7 @@ import org.example.model.Plan;
 import org.example.services.PlanServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -30,7 +32,11 @@ public class PlanController {
     }
 
     @PostMapping()
-    public String addPlan(@ModelAttribute("plan")Plan plan, @AuthenticationPrincipal UserDetails userDetails) {
+    public String addPlan(@Valid @ModelAttribute("plan")Plan plan, BindingResult bind, @AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (bind.hasErrors()) {
+            model.addAttribute("username", userDetails.getUsername());
+            return "ToDo";
+        }
         User user = userService.findByEmail(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         plan.setUser(user);
         planServices.save(plan);
@@ -96,6 +102,8 @@ public class PlanController {
     public String findByWord(Model model,@RequestParam(required = false) String name, @AuthenticationPrincipal UserDetails userDetails){
         model.addAttribute("plan", new Plan());
         User user = userService.findByEmail(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        model.addAttribute("username", userDetails.getUsername());
+
         model.addAttribute("plans",planServices.findByNameIsContainingIgnoreCaseOrDescriptionIsContainingIgnoreCase(name, name, user));
         model.addAttribute("arhivPlans", arhivPlan.findByNameIsContainingIgnoreCaseOrDescriptionIsContainingIgnoreCase(name, name, user));
         return "ToDo";
@@ -107,6 +115,7 @@ public class PlanController {
         User user = userService.findByEmail(userDetails.getUsername()).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
         model.addAttribute("plan", new Plan());
         model.addAttribute("plans", planServices.sortPLans(user, criteri));
+        model.addAttribute("username", userDetails.getUsername());
         return "ToDo";
     }
 

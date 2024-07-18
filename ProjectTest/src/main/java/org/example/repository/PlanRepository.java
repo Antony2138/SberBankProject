@@ -17,4 +17,5 @@ public interface PlanRepository extends JpaRepository<Plan,Long> {
     List<Plan> findByUser(User user);
     Plan findByIdAndUser(long id, User user);
     List<Plan> findByUserOrderByRateDesc(User user);
+    List<Plan> findByUserOrderByCompletedDesc(User user);
 }

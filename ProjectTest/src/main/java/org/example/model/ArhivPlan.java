@@ -28,6 +28,8 @@ public class ArhivPlan {
 
     @Column
     private int rate;
+    @Column
+    private PlanCategory planCategory;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

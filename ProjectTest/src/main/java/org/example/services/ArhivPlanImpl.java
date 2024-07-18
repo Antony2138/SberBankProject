@@ -25,6 +25,7 @@ public class ArhivPlanImpl implements PlanServices<ArhivPlan>{
 
     public void save(Plan plan) {
         ArhivPlan plan1 = new ArhivPlan();
+        plan1.setPlanCategory(plan.getPlanCategory());
         plan1.setUser(plan.getUser());
         plan1.setName(plan.getName());
         plan1.setRate(plan.getRate());

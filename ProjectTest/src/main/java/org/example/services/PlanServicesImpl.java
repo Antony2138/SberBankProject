@@ -27,6 +27,7 @@ public class PlanServicesImpl implements PlanServices<Plan> {
 
     public void save(ArhivPlan plan) {
         Plan plan1 = new Plan();
+        plan1.setPlanCategory(plan.getPlanCategory());
         plan1.setUser(plan.getUser());
         plan1.setName(plan.getName());
         plan1.setRate(plan.getRate());
@@ -77,6 +78,8 @@ public class PlanServicesImpl implements PlanServices<Plan> {
         switch (criteri){
             case "rate":
                 return planRepository.findByUserOrderByRateDesc(user);
+            case  "completed":
+                return planRepository.findByUserOrderByCompletedDesc(user);
             default:
                 return planRepository.findAll();
         }
